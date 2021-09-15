@@ -1,0 +1,50 @@
+The act of providing environment variables is referred to as provisioning. We have two levels to work with when dealing with server provisioning: infrastructure and application levels. We can either set the environment through application level logic, or we can use a tool to provision an environment for us.
+
+A common application level tool is dotenv which allows us to load environment variables from a file named .env. Install it via:
+
+npm install dotenv --save
+
+Loading your environment variables is a one-liner:
+
+require('dotenv').config();
+
+While this is convenient for development needs, it is considered bad practice to couple an environment with your application, so keep it out by adding .env to your .gitignore file.
+
+At the infrastructure level, we can use deployment manager tools like PM2, Docker Compose and Kubernetes to specify the environment.
+
+PM2 uses an ecosystem.yaml file where you can specify the environment using the env property:
+
+apps:
+  - script: ./app.js
+    name: 'my_application'
+    env:
+      NODE_ENV: development
+    env_production:
+      NODE_ENV: production
+    ...
+
+Docker Compose likewise allows for an environment property to be specified in a service manifest:
+
+version: "3"
+services:
+  my_application:
+    image: node:8.9.4-alpine
+    environment:
+      NODE_ENV: production
+      ...
+    ...
+
+Kubernetes has an equivalent env property in the pod template manifest which allows us to set the environment:
+
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: my_application
+spec:
+  ...
+  template:
+    spec:
+      env:
+        - name: NODE_ENV
+          value: production
+        ...
