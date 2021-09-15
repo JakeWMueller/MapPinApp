@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRoute = require("./routes/users");
 const pinRoute = require("./routes/pins");
+// const userModel = require("./models/User");
+// const pinModel = require("./models/Pin");
+
 
 dotenv.config();
 
@@ -23,10 +26,9 @@ mongoose
     app.use("/api/pins", pinRoute);
 
 const PORT = process.env.PORT || 3000;
-console.log(__dirname);
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.resolve(__dirname, "./frontend/build")));
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"));
 });
 app.listen(PORT, ()=>{
     console.log(`Backend server is running on port ${PORT}.`);
