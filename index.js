@@ -23,10 +23,11 @@ mongoose
     app.use("/api/pins", pinRoute);
 
 const PORT = process.env.PORT || 3000;
+console.log(__dirname);
 app.use(express.static(path.join(__dirname, 'build')));
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 app.listen(PORT, ()=>{
-    console.log("Backend server is running on port ${ PORT }.");
+    console.log(`Backend server is running on port ${PORT}.`);
 });
